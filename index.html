@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FloWaves - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #fafaf9; color: #1a1a1a; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+        .login-container { width: 100%; max-width: 380px; }
+        .logo-placeholder { width: 80px; height: 80px; border-radius: 12px; border: 1px dashed #d4d4d4; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; }
+        .logo-placeholder p { font-size: 11px; color: #a3a3a3; margin: 0; }
+        h1 { font-size: 24px; font-weight: 500; margin: 0 0 8px 0; letter-spacing: -0.02em; color: #0a0a0a; }
+        .subtitle { font-size: 14px; color: #737373; margin: 0 0 2.5rem 0; line-height: 1.5; }
+        button { font-family: inherit; cursor: pointer; transition: all 0.15s ease; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-google { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 11px 16px; border: 1px solid #e5e5e5; background: white; border-radius: 8px; font-size: 14px; font-weight: 500; color: #171717; margin-bottom: 1.25rem; }
+        .btn-google:hover:not(:disabled) { background: #f5f5f5; border-color: #d4d4d4; }
+        .btn-google svg { width: 16px; height: 16px; }
+        .divider { display: flex; align-items: center; gap: 12px; margin: 1.5rem 0; }
+        .divider-line { flex: 1; height: 1px; background: #e5e5e5; }
+        .divider-text { font-size: 11px; color: #a3a3a3; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; }
+        input { width: 100%; padding: 11px 14px; border: 1px solid #e5e5e5; border-radius: 8px; font-family: inherit; font-size: 14px; margin-bottom: 10px; background: white; transition: all 0.15s ease; color: #0a0a0a; }
+        input::placeholder { color: #a3a3a3; }
+        input:hover { border-color: #d4d4d4; }
+        input:focus { outline: none; border-color: #0a0a0a; box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05); }
+        .btn-primary { width: 100%; background: #0a0a0a; color: white; border: none; padding: 11px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; margin: 0.5rem 0 1.5rem 0; }
+        .btn-primary:hover:not(:disabled) { background: #262626; }
+        .forgot-link { display: block; text-align: center; font-size: 13px; color: #737373; text-decoration: none; background: none; border: none; width: 100%; font-family: inherit; padding: 4px; cursor: pointer; }
+        .forgot-link:hover { color: #0a0a0a; }
+        .message { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 1rem; display: none; }
+        .message.show { display: block; }
+        .message.error { background: #fef2f2; border: 1px solid #fee2e2; color: #dc2626; }
+        .message.success { background: #f0fdf4; border: 1px solid #dcfce7; color: #16a34a; }
+        .message.info { background: #eff6ff; border: 1px solid #dbeafe; color: #2563eb; }
+        .loading { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .success-screen { text-align: center; display: none; }
+        .success-screen.show { display: block; }
+        .success-icon { width: 48px; height: 48px; margin: 0 auto 1.5rem; background: #f0fdf4; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #16a34a; }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div id="loginScreen">
+            <div class="logo-placeholder"><p>logo</p></div>
+            <h1>Bem-vindo</h1>
+            <p class="subtitle">Acesso exclusivo da equipe FloWaves</p>
+            <div id="message" class="message"></div>
+            <button class="btn-google" id="googleBtn">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                <span id="googleBtnText">Entrar com Google</span>
+            </button>
+            <div class="divider">
+                <div class="divider-line"></div>
+                <span class="divider-text">ou</span>
+                <div class="divider-line"></div>
+            </div>
+            <input type="email" id="email" placeholder="E-mail" autocomplete="email">
+            <input type="password" id="password" placeholder="Senha" autocomplete="current-password">
+            <button class="btn-primary" id="loginBtn"><span id="loginBtnText">Entrar</span></button>
+            <button class="forgot-link" id="forgotBtn">Esqueci minha senha</button>
+        </div>
+        <div id="successScreen" class="success-screen">
+            <div class="success-icon">✓</div>
+            <h1>Login realizado!</h1>
+            <p class="subtitle" id="welcomeMsg">Você está logado.</p>
+            <button class="btn-primary" onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJeCYhLiTyjO4edrF8W3K25E2jnYyNxNA",
+            authDomain: "projetos-flowaves.firebaseapp.com",
+            projectId: "projetos-flowaves",
+            storageBucket: "projetos-flowaves.firebasestorage.app",
+            messagingSenderId: "922542016188",
+            appId: "1:922542016188:web:b64e9d803f3548c766b2b9",
+            measurementId: "G-D0FYRKDSNV"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        const loginScreen = document.getElementById('loginScreen');
+        const successScreen = document.getElementById('successScreen');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const googleBtn = document.getElementById('googleBtn');
+        const forgotBtn = document.getElementById('forgotBtn');
+        const message = document.getElementById('message');
+        const welcomeMsg = document.getElementById('welcomeMsg');
+
+        function showMessage(text, type = 'error') {
+            message.textContent = text;
+            message.className = `message show ${type}`;
+            if (type !== 'error') setTimeout(() => { message.className = 'message'; }, 5000);
+        }
+
+        function hideMessage() { message.className = 'message'; }
+
+        function translateError(code) {
+            const errors = {
+                'auth/invalid-email': 'E-mail inválido',
+                'auth/user-disabled': 'Usuário desativado',
+                'auth/user-not-found': 'Usuário não encontrado',
+                'auth/wrong-password': 'Senha incorreta',
+                'auth/invalid-credential': 'E-mail ou senha incorretos',
+                'auth/too-many-requests': 'Muitas tentativas. Tente novamente mais tarde',
+                'auth/network-request-failed': 'Erro de conexão. Verifique sua internet',
+                'auth/popup-closed-by-user': 'Login cancelado',
+                'auth/popup-blocked': 'Pop-up bloqueado. Permita pop-ups neste site'
+            };
+            return errors[code] || 'Erro ao fazer login. Tente novamente';
+        }
+
+        loginBtn.addEventListener('click', async () => {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            if (!email || !password) { showMessage('Preencha e-mail e senha'); return; }
+            loginBtn.disabled = true;
+            document.getElementById('loginBtnText').innerHTML = '<span class="loading"></span>';
+            hideMessage();
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                showMessage(translateError(error.code));
+                loginBtn.disabled = false;
+                document.getElementById('loginBtnText').textContent = 'Entrar';
+            }
+        });
+
+        googleBtn.addEventListener('click', async () => {
+            googleBtn.disabled = true;
+            document.getElementById('googleBtnText').textContent = 'Conectando...';
+            hideMessage();
+            try {
+                await signInWithPopup(auth, googleProvider);
+            } catch (error) {
+                showMessage(translateError(error.code));
+                googleBtn.disabled = false;
+                document.getElementById('googleBtnText').textContent = 'Entrar com Google';
+            }
+        });
+
+        forgotBtn.addEventListener('click', async () => {
+            const email = emailInput.value.trim();
+            if (!email) { showMessage('Digite seu e-mail no campo acima', 'info'); emailInput.focus(); return; }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showMessage(`Link de recuperação enviado para ${email}`, 'success');
+            } catch (error) { showMessage(translateError(error.code)); }
+        });
+
+        passwordInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') loginBtn.click(); });
+        emailInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') passwordInput.focus(); });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loginScreen.style.display = 'none';
+                successScreen.classList.add('show');
+                const name = user.displayName || user.email.split('@')[0];
+                welcomeMsg.textContent = `Olá ${name}! Você está logado como ${user.email}.`;
+            } else {
+                loginScreen.style.display = 'block';
+                successScreen.classList.remove('show');
+                emailInput.value = '';
+                passwordInput.value = '';
+            }
+        });
+
+        window.logout = async () => {
+            try { await signOut(auth); } catch (error) { console.error('Erro:', error); }
+        };
+    </script>
+</body>
+</html>
